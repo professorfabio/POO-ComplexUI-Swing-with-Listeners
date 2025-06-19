@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private JMenuBar menuBar;
@@ -11,7 +13,7 @@ public class MainFrame extends JFrame {
 
     private JMenu sendSubMenu;
     private JMenuItem sendEmailItem;
-    private JMenuItem sendPriterItem;
+    private JMenuItem sendPrinterItem;
 
     private JMenu editMenu;
     private JMenuItem copyMenuItem;
@@ -55,18 +57,22 @@ public class MainFrame extends JFrame {
     }
 
     private void createFileMenu() {
-        // Create File menu and its items
+        // Create File menu and the action listener for its items
         fileMenu = new JMenu("File");
+        TrataFileMenuItems trataFileMenuItems = new TrataFileMenuItems();
         // Create Send submenu and add it to the File menu
         sendSubMenu = new JMenu("Send");
         fileMenu.add(sendSubMenu);
         sendEmailItem = new JMenuItem("Send Email");
         sendSubMenu.add(sendEmailItem);
-        sendPriterItem = new JMenuItem("Send Priter");
-        sendSubMenu.add(sendPriterItem);
+        sendPrinterItem = new JMenuItem("Send Printer");
+        sendSubMenu.add(sendPrinterItem);
+        // Create the remaining items of the File menu
         saveMenuItem = new JMenuItem("Save");
+        saveMenuItem.addActionListener(trataFileMenuItems);
         fileMenu.add(saveMenuItem);
         exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.addActionListener(trataFileMenuItems);
         fileMenu.add(exitMenuItem);
         menuBar.add(fileMenu);
     }
@@ -164,5 +170,14 @@ public class MainFrame extends JFrame {
         bottomPanel.add(newButton);
         bottomPanel.add(cancelButton);
         mainPanel.add(bottomPanel);
+    }
+
+    private class TrataFileMenuItems implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == exitMenuItem)
+                System.exit(0);
+            if (e.getSource() == saveMenuItem)
+                JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
+        }
     }
 }
